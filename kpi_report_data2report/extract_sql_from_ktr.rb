@@ -34,17 +34,19 @@ def extract_sql_from_ktr(ktr_path)
     result << "---   connection: #{raw d[0]}\n"
     result << "---   sql:\n"
     result << raw(d[1])
+    result << "\n"
   end
 
   # sql string
   r_string = /<connection>(.*?)<\/connection>\s+<execute_each_row>(.*?)<\/execute_each_row>\s+<single_statement>(.*?)<\/single_statement>\s+<replace_variables>(.*?)<\/replace_variables>\s+<quoteString>(.*?)<\/quoteString>\s+<sql>(.*?)<\/sql>/
   m_string = ktr_str.scan(r_string)
-  result << "\n---ExecSql size: #{m_string.size}"
+  result << "\n---ExecSql size: #{m_string.size}\n"
   m_string.each_with_index do |d, index|
     result << "---ExecSql#{index}\n"
-    result << "------connection: #{raw d[0]}\n"
-    result << "------sql:\n"
+    result << "---   connection: #{raw d[0]}\n"
+    result << "---   sql:\n"
     result << raw(d[-1])
+    result << "\n"
   end
   result
 end

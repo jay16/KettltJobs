@@ -1,4 +1,4 @@
----ktr_file: kpi_track_hours.ktr  timestamp:2014/05/28 22:53:32
+---ktr_file: kpi_track_hours.ktr  timestamp:2014/05/28 23:12:09
 
 ---connection size: 2
 ---connection0
@@ -78,9 +78,11 @@ group by
 order by
   camp.id,
   c.hours
----ExecSql size: 1---ExecSql0
-------connection: report-167
-------sql:
+
+---ExecSql size: 1
+---ExecSql0
+---   connection: report-167
+---   sql:
 -- delete the data insert today but already exist before
 delete 
 from kpi_tracks_hours 

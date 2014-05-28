@@ -1,4 +1,4 @@
----ktr_file: kpi_camp_report.ktr  timestamp:2014/05/28 22:53:32
+---ktr_file: kpi_camp_report.ktr  timestamp:2014/05/28 23:12:09
 
 ---connection size: 2
 ---connection0
@@ -54,14 +54,17 @@
    from dog_totle_data
  ) dog on dog.camp_id = camp.id
 
----ExecSql size: 2---ExecSql0
-------connection: 167-report
-------sql:
+
+---ExecSql size: 2
+---ExecSql0
+---   connection: 167-report
+---   sql:
 truncate table kpi_camp_report;
 
-commit;---ExecSql1
-------connection: 167-report
-------sql:
+commit;
+---ExecSql1
+---   connection: 167-report
+---   sql:
 commit;
 
 update kpi_camp_report
@@ -92,3 +95,4 @@ kpi_camp_report.qty_click_accounts =
 );
 
 commit;
+

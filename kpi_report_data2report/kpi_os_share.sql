@@ -1,4 +1,4 @@
----ktr_file: kpi_os_share.ktr  timestamp:2014/05/28 22:53:32
+---ktr_file: kpi_os_share.ktr  timestamp:2014/05/28 23:12:09
 
 ---connection size: 2
 ---connection0
@@ -97,9 +97,11 @@ and camp.id in
   ) ct
 )
 
----ExecSql size: 1---ExecSql0
-------connection: 167-report
-------sql:
+
+---ExecSql size: 1
+---ExecSql0
+---   connection: 167-report
+---   sql:
 -- delete the data insert today but already exist before
 delete 
 from kpi_os_share 

@@ -1,4 +1,4 @@
----ktr_file: kpi_domain_share.ktr  timestamp:2014/05/28 22:53:32
+---ktr_file: kpi_domain_share.ktr  timestamp:2014/05/28 23:12:09
 
 ---connection size: 2
 ---connection0
@@ -143,9 +143,11 @@ where cl.camp_id in
   from cemail_logs
   where to_char(created_at, 'YYYYMMDD') = to_char(sysdate-1, 'YYYYMMDD')
 )
----ExecSql size: 1---ExecSql0
-------connection: 167-report
-------sql:
+
+---ExecSql size: 1
+---ExecSql0
+---   connection: 167-report
+---   sql:
 -- delete the data insert today but already exist before
 delete 
 from kpi_domain_share 
@@ -172,3 +174,4 @@ and camp_id in
       where to_char(date_load, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD')
     )
   )
+
