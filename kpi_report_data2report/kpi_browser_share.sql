@@ -1,29 +1,29 @@
----ktr_file: kpi_browser_share.ktr  timestamp:2014/05/28 23:12:09
+--## ktr_file: kpi_browser_share.ktr  timestamp:2014/05/29 11:31:59
 
----connection size: 2
----connection0
----   name     : 167-browser share
----   server   : 192.168.0.167
----   type     : ORACLE
----   access   : Native
----   database : orcl
----   port     : 1521
----   username : focus
----   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
----connection1
----   name     : 167-report
----   server   : 192.168.0.167
----   type     : ORACLE
----   access   : Native
----   database : orcl
----   port     : 1521
----   username : report
----   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
+--#connection size: 2
+--#connection0
+--#   name     : 167-browser share
+--#   server   : 192.168.0.167
+--#   type     : ORACLE
+--#   access   : Native
+--#   database : orcl
+--#   port     : 1521
+--#   username : focus
+--#   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
+--#connection1
+--#   name     : 167-report
+--#   server   : 192.168.0.167
+--#   type     : ORACLE
+--#   access   : Native
+--#   database : orcl
+--#   port     : 1521
+--#   username : report
+--#   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
 
----TableInput size: 1
----TableInput0
----   connection: 167-browser share
----   sql:
+--#TableInput size: 1
+--#TableInput0
+--#   connection: 167-browser share
+--#   sql:
 select 
   camp.id as camp_id,
   camp.name as camp_name,
@@ -48,11 +48,12 @@ left join
       member_id,
       browser,
       case 
-        when instr(lower(browser), 'ie') > 0 then 'ie'
+        when instr(lower(browser), 'msie') > 0 then 'ie'
         when instr(lower(browser), 'chrome') > 0 then 'chrome'
         when instr(lower(browser), 'firefox') > 0 then 'firefox'
         when instr(lower(browser), 'safari') > 0 then 'safari'
         when instr(lower(browser), 'opera') > 0 then 'opera'
+        when instr(lower(browser), 'qq') > 0 then 'qq'
         else 'other'
       end as browser_brand
     from clicks 
@@ -74,11 +75,12 @@ left join
       member_id,
       browser,
       case 
-        when instr(lower(browser), 'ie') > 0 then 'ie'
+        when instr(lower(browser), 'msie') > 0 then 'ie'
         when instr(lower(browser), 'chrome') > 0 then 'chrome'
         when instr(lower(browser), 'firefox') > 0 then 'firefox'
         when instr(lower(browser), 'safari') > 0 then 'safari'
         when instr(lower(browser), 'opera') > 0 then 'opera'
+        when instr(lower(browser), 'qq') > 0 then 'qq'
         else 'other'
       end as browser_brand
     from tracks 
@@ -97,10 +99,10 @@ and camp.id in
   ) ct
 )
 
----ExecSql size: 1
----ExecSql0
----   connection: 167-report
----   sql:
+--#ExecSql size: 1
+--#ExecSql0
+--#   connection: 167-report
+--#   sql:
 -- delete the data insert today but already exist before
 delete
 from kpi_browser_share 

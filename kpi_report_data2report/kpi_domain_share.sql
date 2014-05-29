@@ -1,30 +1,29 @@
----ktr_file: kpi_domain_share.ktr  timestamp:2014/05/28 23:12:09
+--## ktr_file: kpi_domain_share.ktr  timestamp:2014/05/29 11:31:59
 
----connection size: 2
----connection0
----   name     : 167-focus
----   server   : 192.168.0.167
----   type     : ORACLE
----   access   : Native
----   database : orcl
----   port     : 1521
----   username : focus
----   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
----connection1
----   name     : 167-report
----   server   : 192.168.0.167
----   type     : ORACLE
----   access   : Native
----   database : orcl
----   port     : 1521
----   username : report
----   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
+--#connection size: 2
+--#connection0
+--#   name     : 167-focus
+--#   server   : 192.168.0.167
+--#   type     : ORACLE
+--#   access   : Native
+--#   database : orcl
+--#   port     : 1521
+--#   username : focus
+--#   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
+--#connection1
+--#   name     : 167-report
+--#   server   : 192.168.0.167
+--#   type     : ORACLE
+--#   access   : Native
+--#   database : orcl
+--#   port     : 1521
+--#   username : report
+--#   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
 
----TableInput size: 1
----TableInput0
----   connection: 167-focus
----   sql:
-
+--#TableInput size: 1
+--#TableInput0
+--#   connection: 167-focus
+--#   sql:
 select
   cl.camp_id,
   cl.camp_name,
@@ -39,7 +38,7 @@ from
 (
   select 
     two.camp_id,
-    two.camp_name,
+    max(two.camp_name) as camp_name, -- 发信campaign名称有微调时不统一
     two.domain as domains,
     count(two.domain) as qty_accounts
   from
@@ -48,13 +47,23 @@ from
       one.camp_name,
       one.camp_id,
       case 
+        -- vip.qq.com qq.com foxmail.com
         when one.d = 'qq.com' or one.d = 'vip.qq.com' or one.d = 'foxmail.com' then 'qq' 
-        when one.d = '126.com' or one.d = 'vip.126.com' or one.d = '163.com' or one.d = 'vip.163.com' then '163'
-        when one.d = 'yahoo.com' or one.d = 'yahoo.com.cn' or one.d = 'yahoo.cn' then 'yahoo'
+        -- 163.com vip.163.com 126.com
+        when one.d = '126.com' or one.d = '163.com' or one.d = 'vip.163.com' then '163'
+        -- yahoo.cn yahoo.com.hk yahoo.com.cn yahoo.com.vn yahoo.com.tw yahoo.com.sg yahoo.com.au yahoo.ca yahoo.com yahoo.cn
+        -- yahoo.co yahoo.co.uk yahoo.co.id yahoo.co.jp
+        when instr(one.d,'yahoo.c') > 0 then 'yahoo'
+        -- hotmail.com msn.com
         when one.d = 'hotmail.com' or one.d = 'msn.com' then 'hotmail'
+        -- gmail.com
         when one.d = 'gmail.com' then 'gmail'
-        when one.d = 'sohu.com' then 'sohu'
-        when one.d = 'sina.com' or one.d = 'sina.com.cn' or one.d = 'sina.cn' then 'sina'
+        -- 163.net (tom vip) top.com
+        when one.d = 'tom.com' or one.d = '163.net' then 'tom'
+        -- sohu.com vip.sohu.com
+        when one.d = 'sohu.com' or one.d = 'vip.sohu.com' then 'sohu'
+        -- sina.com vip.sina.com sina.com.cn sina.cn
+        when one.d = 'sina.com' or one.d = 'sina.com.cn' or one.d = 'sina.cn' or one.d = 'vip.sina.com' then 'sina'
         else 'other' 
       end as domain
     from
@@ -66,7 +75,7 @@ from
       from cemail_logs
     ) one
   ) two
-  group by two.camp_id, two.camp_name, two.domain
+  group by two.camp_id, two.domain
 ) cl
 left join
 (
@@ -81,13 +90,23 @@ left join
       one.camp_id,
       one.member_id,
       case 
+        -- vip.qq.com qq.com foxmail.com
         when one.d = 'qq.com' or one.d = 'vip.qq.com' or one.d = 'foxmail.com' then 'qq' 
-        when one.d = '126.com' or one.d = 'vip.126.com' or one.d = '163.com' or one.d = 'vip.163.com' then '163'
-        when one.d = 'yahoo.com' or one.d = 'yahoo.com.cn' or one.d = 'yahoo.cn' then 'yahoo'
+        -- 163.com vip.163.com 126.com
+        when one.d = '126.com' or one.d = '163.com' or one.d = 'vip.163.com' then '163'
+        -- yahoo.cn yahoo.com.hk yahoo.com.cn yahoo.com.vn yahoo.com.tw yahoo.com.sg yahoo.com.au yahoo.ca yahoo.com yahoo.cn
+        -- yahoo.co yahoo.co.uk yahoo.co.id yahoo.co.jp
+        when instr(one.d,'yahoo.c') > 0 then 'yahoo'
+        -- hotmail.com msn.com
         when one.d = 'hotmail.com' or one.d = 'msn.com' then 'hotmail'
+        -- gmail.com
         when one.d = 'gmail.com' then 'gmail'
-        when one.d = 'sohu.com' then 'sohu'
-        when one.d = 'sina.com' or one.d = 'sina.com.cn' or one.d = 'sina.cn' then 'sina'
+        -- 163.net (tom vip) top.com
+        when one.d = 'tom.com' or one.d = '163.net' then 'tom'
+        -- sohu.com vip.sohu.com
+        when one.d = 'sohu.com' or one.d = 'vip.sohu.com' then 'sohu'
+        -- sina.com vip.sina.com sina.com.cn sina.cn
+        when one.d = 'sina.com' or one.d = 'sina.com.cn' or one.d = 'sina.cn' or one.d = 'vip.sina.com' then 'sina'
         else 'other' 
       end as domain
      from
@@ -115,13 +134,23 @@ left join
       one.camp_id,
       one.member_id,
       case 
+        -- vip.qq.com qq.com foxmail.com
         when one.d = 'qq.com' or one.d = 'vip.qq.com' or one.d = 'foxmail.com' then 'qq' 
-        when one.d = '126.com' or one.d = 'vip.126.com' or one.d = '163.com' or one.d = 'vip.163.com' then '163'
-        when one.d = 'yahoo.com' or one.d = 'yahoo.com.cn' or one.d = 'yahoo.cn' then 'yahoo'
+        -- 163.com vip.163.com 126.com
+        when one.d = '126.com' or one.d = '163.com' or one.d = 'vip.163.com' then '163'
+        -- yahoo.cn yahoo.com.hk yahoo.com.cn yahoo.com.vn yahoo.com.tw yahoo.com.sg yahoo.com.au yahoo.ca yahoo.com yahoo.cn
+        -- yahoo.co yahoo.co.uk yahoo.co.id yahoo.co.jp
+        when instr(one.d,'yahoo.c') > 0 then 'yahoo'
+        -- hotmail.com msn.com
         when one.d = 'hotmail.com' or one.d = 'msn.com' then 'hotmail'
+        -- gmail.com
         when one.d = 'gmail.com' then 'gmail'
-        when one.d = 'sohu.com' then 'sohu'
-        when one.d = 'sina.com' or one.d = 'sina.com.cn' or one.d = 'sina.cn' then 'sina'
+        -- 163.net (tom vip) top.com
+        when one.d = 'tom.com' or one.d = '163.net' then 'tom'
+        -- sohu.com vip.sohu.com
+        when one.d = 'sohu.com' or one.d = 'vip.sohu.com' then 'sohu'
+        -- sina.com vip.sina.com sina.com.cn sina.cn
+        when one.d = 'sina.com' or one.d = 'sina.com.cn' or one.d = 'sina.cn' or one.d = 'vip.sina.com' then 'sina'
         else 'other' 
       end as domain
      from
@@ -144,10 +173,10 @@ where cl.camp_id in
   where to_char(created_at, 'YYYYMMDD') = to_char(sysdate-1, 'YYYYMMDD')
 )
 
----ExecSql size: 1
----ExecSql0
----   connection: 167-report
----   sql:
+--#ExecSql size: 1
+--#ExecSql0
+--#   connection: 167-report
+--#   sql:
 -- delete the data insert today but already exist before
 delete 
 from kpi_domain_share 

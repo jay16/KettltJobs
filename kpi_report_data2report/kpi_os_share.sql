@@ -1,29 +1,29 @@
----ktr_file: kpi_os_share.ktr  timestamp:2014/05/28 23:12:09
+--## ktr_file: kpi_os_share.ktr  timestamp:2014/05/29 11:31:59
 
----connection size: 2
----connection0
----   name     : 167-focus
----   server   : 192.168.0.167
----   type     : ORACLE
----   access   : Native
----   database : orcl
----   port     : 1521
----   username : focus
----   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
----connection1
----   name     : 167-report
----   server   : 192.168.0.167
----   type     : ORACLE
----   access   : Native
----   database : orcl
----   port     : 1521
----   username : report
----   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
+--#connection size: 2
+--#connection0
+--#   name     : 167-focus
+--#   server   : 192.168.0.167
+--#   type     : ORACLE
+--#   access   : Native
+--#   database : orcl
+--#   port     : 1521
+--#   username : focus
+--#   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
+--#connection1
+--#   name     : 167-report
+--#   server   : 192.168.0.167
+--#   type     : ORACLE
+--#   access   : Native
+--#   database : orcl
+--#   port     : 1521
+--#   username : report
+--#   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
 
----TableInput size: 1
----TableInput0
----   connection: 167-focus
----   sql:
+--#TableInput size: 1
+--#TableInput0
+--#   connection: 167-focus
+--#   sql:
 select 
   camp.id as camp_id,
   camp.name as camp_name,
@@ -50,7 +50,7 @@ left join
       case 
         when instr(lower(browser), 'android') > 0 then 'android'
         when instr(lower(browser), 'linux') > 0 then 'linux'
-        when instr(lower(browser), 'window') > 0 then 'window'
+        when instr(lower(browser), 'window') > 0 or instr(lower(browser), 'win32') > 0 then 'window'
         when instr(lower(browser), 'iphone') > 0 or instr(lower(browser), 'ipad') > 0 then 'ios'
         when instr(lower(browser), 'mac') > 0 then 'mac'
         else 'other'
@@ -76,7 +76,7 @@ left join
       case 
         when instr(lower(browser), 'android') > 0 then 'android'
         when instr(lower(browser), 'linux') > 0 then 'linux'
-        when instr(lower(browser), 'window') > 0 then 'window'
+        when instr(lower(browser), 'window') > 0 or instr(lower(browser), 'win32') > 0 then 'window'
         when instr(lower(browser), 'iphone') > 0 or instr(lower(browser), 'ipad') > 0 then 'ios'
         when instr(lower(browser), 'mac') > 0 then 'mac'
         else 'other'
@@ -97,11 +97,10 @@ and camp.id in
   ) ct
 )
 
-
----ExecSql size: 1
----ExecSql0
----   connection: 167-report
----   sql:
+--#ExecSql size: 1
+--#ExecSql0
+--#   connection: 167-report
+--#   sql:
 -- delete the data insert today but already exist before
 delete 
 from kpi_os_share 

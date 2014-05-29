@@ -1,31 +1,29 @@
----ktr_file: kpi_track_hours.ktr  timestamp:2014/05/28 23:12:09
+--## ktr_file: kpi_track_hours.ktr  timestamp:2014/05/29 11:31:59
 
----connection size: 2
----connection0
----   name     : orcl-167
----   server   : 192.168.0.167
----   type     : ORACLE
----   access   : Native
----   database : orcl
----   port     : 1521
----   username : focus
----   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
----connection1
----   name     : report-167
----   server   : 192.168.0.167
----   type     : ORACLE
----   access   : Native
----   database : orcl
----   port     : 1521
----   username : report
----   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
+--#connection size: 2
+--#connection0
+--#   name     : orcl-167
+--#   server   : 192.168.0.167
+--#   type     : ORACLE
+--#   access   : Native
+--#   database : orcl
+--#   port     : 1521
+--#   username : focus
+--#   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
+--#connection1
+--#   name     : report-167
+--#   server   : 192.168.0.167
+--#   type     : ORACLE
+--#   access   : Native
+--#   database : orcl
+--#   port     : 1521
+--#   username : report
+--#   password : Encrypted 2be98afc86aa7f2e48d16ad65cdadff8b
 
----TableInput size: 1
----TableInput0
----   connection: orcl-167
----   sql:
-
---main
+--#TableInput size: 1
+--#TableInput0
+--#   connection: orcl-167
+--#   sql:
 select
   camp.id     as camp_id,
   camp.name   as camp_name,
@@ -43,7 +41,7 @@ left join
     select
       campaign_id                as camp_id,
       to_char(created_at,'HH24') as hours,
-      count(1)                   as qty_clicks,
+      count(c.member_id)         as qty_clicks,
       count(distinct c.member_id)as qty_click_accounts
     from clicks c
     group by campaign_id , to_char(created_at,'HH24')
@@ -53,7 +51,7 @@ left join
     select
       t.campaign_id               as camp_id,
       to_char(t.created_at,'HH24')as hours,
-      count(1)                    as qty_opens,
+      count(t.member_id)          as qty_opens,
       count(distinct t.member_id) as qty_open_accounts
     from tracks t
     group by campaign_id , to_char(created_at,'HH24')
@@ -79,10 +77,10 @@ order by
   camp.id,
   c.hours
 
----ExecSql size: 1
----ExecSql0
----   connection: report-167
----   sql:
+--#ExecSql size: 1
+--#ExecSql0
+--#   connection: report-167
+--#   sql:
 -- delete the data insert today but already exist before
 delete 
 from kpi_tracks_hours 
