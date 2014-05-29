@@ -136,7 +136,7 @@
            <schema_name/>
            </partitioning>
     <connection>167-browser share</connection>
-    <sql>select &#xd;&#xa;  camp.id as camp_id,&#xd;&#xa;  camp.name as camp_name,&#xd;&#xa;  click.browser_brand as browser,&#xd;&#xa;  track.qty_opens,&#xd;&#xa;  track.qty_open_accounts,&#xd;&#xa;  click.qty_clicks,&#xd;&#xa;  click.qty_click_accounts,&#xd;&#xa;  sysdate as date_load&#xd;&#xa;from campaigns  camp&#xd;&#xa;left join&#xd;&#xa;&#x28;&#xd;&#xa;  select &#xd;&#xa;    one.camp_id,&#xd;&#xa;    one.browser_brand,&#xd;&#xa;    count&#x28;distinct one.member_id&#x29; as qty_click_accounts,&#xd;&#xa;    count&#x28;one.member_id&#x29; as qty_clicks&#xd;&#xa;  from &#xd;&#xa;  &#x28;&#xd;&#xa;    select &#xd;&#xa;      campaign_id as camp_id,&#xd;&#xa;      member_id,&#xd;&#xa;      browser,&#xd;&#xa;      case &#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;ie&#x27;&#x29; &#x3e; 0 then &#x27;ie&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;chrome&#x27;&#x29; &#x3e; 0 then &#x27;chrome&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;firefox&#x27;&#x29; &#x3e; 0 then &#x27;firefox&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;safari&#x27;&#x29; &#x3e; 0 then &#x27;safari&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;opera&#x27;&#x29; &#x3e; 0 then &#x27;opera&#x27;&#xd;&#xa;        else &#x27;other&#x27;&#xd;&#xa;      end as browser_brand&#xd;&#xa;    from clicks &#xd;&#xa;    where length&#x28;browser&#x29; &#x3e; 0&#xd;&#xa;  &#x29; one&#xd;&#xa;  group by one.camp_id, one.browser_brand&#xd;&#xa;&#x29; click on click.camp_id &#x3d; camp.id&#xd;&#xa;left join&#xd;&#xa;&#x28;&#xd;&#xa;  select &#xd;&#xa;    one.camp_id,&#xd;&#xa;    one.browser_brand,&#xd;&#xa;    count&#x28;distinct one.member_id&#x29; as qty_open_accounts,&#xd;&#xa;    count&#x28;one.member_id&#x29; as qty_opens&#xd;&#xa;  from &#xd;&#xa;  &#x28;&#xd;&#xa;    select &#xd;&#xa;      campaign_id as camp_id,&#xd;&#xa;      member_id,&#xd;&#xa;      browser,&#xd;&#xa;      case &#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;ie&#x27;&#x29; &#x3e; 0 then &#x27;ie&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;chrome&#x27;&#x29; &#x3e; 0 then &#x27;chrome&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;firefox&#x27;&#x29; &#x3e; 0 then &#x27;firefox&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;safari&#x27;&#x29; &#x3e; 0 then &#x27;safari&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;opera&#x27;&#x29; &#x3e; 0 then &#x27;opera&#x27;&#xd;&#xa;        else &#x27;other&#x27;&#xd;&#xa;      end as browser_brand&#xd;&#xa;    from tracks &#xd;&#xa;    where length&#x28;browser&#x29; &#x3e; 0&#xd;&#xa;  &#x29; one&#xd;&#xa;  group by one.camp_id, one.browser_brand&#xd;&#xa;&#x29; track on track.camp_id &#x3d; camp.id&#xd;&#xa;where click.browser_brand &#x3d; track.browser_brand&#xd;&#xa;and camp.id in &#xd;&#xa;&#x28;&#xd;&#xa;  select distinct ct.campaign_id from&#xd;&#xa;  &#x28;&#xd;&#xa;    select distinct campaign_id from clicks where to_char&#x28;created_at, &#x27;YYYYMMDD&#x27;&#x29; &#x3d; to_char&#x28;sysdate-1, &#x27;YYYYMMDD&#x27;&#x29;&#xd;&#xa;    union all&#xd;&#xa;    select distinct campaign_id from tracks where to_char&#x28;created_at, &#x27;YYYYMMDD&#x27;&#x29; &#x3d; to_char&#x28;sysdate-1, &#x27;YYYYMMDD&#x27;&#x29;&#xd;&#xa;  &#x29; ct&#xd;&#xa;&#x29;</sql>
+    <sql>select &#xd;&#xa;  camp.id as camp_id,&#xd;&#xa;  camp.name as camp_name,&#xd;&#xa;  click.browser_brand as browser,&#xd;&#xa;  track.qty_opens,&#xd;&#xa;  track.qty_open_accounts,&#xd;&#xa;  click.qty_clicks,&#xd;&#xa;  click.qty_click_accounts,&#xd;&#xa;  sysdate as date_load&#xd;&#xa;from campaigns  camp&#xd;&#xa;left join&#xd;&#xa;&#x28;&#xd;&#xa;  select &#xd;&#xa;    one.camp_id,&#xd;&#xa;    one.browser_brand,&#xd;&#xa;    count&#x28;distinct one.member_id&#x29; as qty_click_accounts,&#xd;&#xa;    count&#x28;one.member_id&#x29; as qty_clicks&#xd;&#xa;  from &#xd;&#xa;  &#x28;&#xd;&#xa;    select &#xd;&#xa;      campaign_id as camp_id,&#xd;&#xa;      member_id,&#xd;&#xa;      browser,&#xd;&#xa;      case &#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;msie&#x27;&#x29; &#x3e; 0 then &#x27;ie&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;chrome&#x27;&#x29; &#x3e; 0 then &#x27;chrome&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;firefox&#x27;&#x29; &#x3e; 0 then &#x27;firefox&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;safari&#x27;&#x29; &#x3e; 0 then &#x27;safari&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;opera&#x27;&#x29; &#x3e; 0 then &#x27;opera&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;qq&#x27;&#x29; &#x3e; 0 then &#x27;qq&#x27;&#xd;&#xa;        else &#x27;other&#x27;&#xd;&#xa;      end as browser_brand&#xd;&#xa;    from clicks &#xd;&#xa;    where length&#x28;browser&#x29; &#x3e; 0&#xd;&#xa;  &#x29; one&#xd;&#xa;  group by one.camp_id, one.browser_brand&#xd;&#xa;&#x29; click on click.camp_id &#x3d; camp.id&#xd;&#xa;left join&#xd;&#xa;&#x28;&#xd;&#xa;  select &#xd;&#xa;    one.camp_id,&#xd;&#xa;    one.browser_brand,&#xd;&#xa;    count&#x28;distinct one.member_id&#x29; as qty_open_accounts,&#xd;&#xa;    count&#x28;one.member_id&#x29; as qty_opens&#xd;&#xa;  from &#xd;&#xa;  &#x28;&#xd;&#xa;    select &#xd;&#xa;      campaign_id as camp_id,&#xd;&#xa;      member_id,&#xd;&#xa;      browser,&#xd;&#xa;      case &#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;msie&#x27;&#x29; &#x3e; 0 then &#x27;ie&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;chrome&#x27;&#x29; &#x3e; 0 then &#x27;chrome&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;firefox&#x27;&#x29; &#x3e; 0 then &#x27;firefox&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;safari&#x27;&#x29; &#x3e; 0 then &#x27;safari&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;opera&#x27;&#x29; &#x3e; 0 then &#x27;opera&#x27;&#xd;&#xa;        when instr&#x28;lower&#x28;browser&#x29;, &#x27;qq&#x27;&#x29; &#x3e; 0 then &#x27;qq&#x27;&#xd;&#xa;        else &#x27;other&#x27;&#xd;&#xa;      end as browser_brand&#xd;&#xa;    from tracks &#xd;&#xa;    where length&#x28;browser&#x29; &#x3e; 0&#xd;&#xa;  &#x29; one&#xd;&#xa;  group by one.camp_id, one.browser_brand&#xd;&#xa;&#x29; track on track.camp_id &#x3d; camp.id&#xd;&#xa;where click.browser_brand &#x3d; track.browser_brand&#xd;&#xa;and camp.id in &#xd;&#xa;&#x28;&#xd;&#xa;  select distinct ct.campaign_id from&#xd;&#xa;  &#x28;&#xd;&#xa;    select distinct campaign_id from clicks where to_char&#x28;created_at, &#x27;YYYYMMDD&#x27;&#x29; &#x3d; to_char&#x28;sysdate-1, &#x27;YYYYMMDD&#x27;&#x29;&#xd;&#xa;    union all&#xd;&#xa;    select distinct campaign_id from tracks where to_char&#x28;created_at, &#x27;YYYYMMDD&#x27;&#x29; &#x3d; to_char&#x28;sysdate-1, &#x27;YYYYMMDD&#x27;&#x29;&#xd;&#xa;  &#x29; ct&#xd;&#xa;&#x29;</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
@@ -146,6 +146,38 @@
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>274</xloc>
       <yloc>156</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>report - delete old data</name>
+    <type>ExecSQL</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <connection>167-report</connection>
+    <execute_each_row>Y</execute_each_row>
+    <single_statement>N</single_statement>
+    <replace_variables>N</replace_variables>
+    <quoteString>N</quoteString>
+    <sql>-- delete the data insert today but already exist before&#xd;&#xa;delete&#xd;&#xa;from kpi_browser_share &#xd;&#xa;where date_load &#x3c;&#x3e; &#xd;&#xa;   &#x28;&#xd;&#xa;      -- lastest date load&#xd;&#xa;      select &#xd;&#xa;        max&#x28;date_load&#x29; as last_date_load&#xd;&#xa;      from kpi_browser_share &#xd;&#xa;      where to_char&#x28;date_load, &#x27;YYYYMMDD&#x27;&#x29; &#x3d; to_char&#x28;sysdate, &#x27;YYYYMMDD&#x27;&#x29;&#xd;&#xa;    &#x29;&#xd;&#xa;and camp_id in &#xd;&#xa;  &#x28;&#xd;&#xa;    -- camp_id - new insert today&#xd;&#xa;    select &#xd;&#xa;      distinct camp_id &#xd;&#xa;    from kpi_browser_share &#xd;&#xa;    where date_load &#x3d; &#xd;&#xa;    &#x28;&#xd;&#xa;      -- lastest date load&#xd;&#xa;      select &#xd;&#xa;        max&#x28;date_load&#x29; as last_date_load&#xd;&#xa;      from kpi_browser_share &#xd;&#xa;      where to_char&#x28;date_load, &#x27;YYYYMMDD&#x27;&#x29; &#x3d; to_char&#x28;sysdate, &#x27;YYYYMMDD&#x27;&#x29;&#xd;&#xa;    &#x29;&#xd;&#xa;  &#x29;</sql>
+    <set_params>N</set_params>
+    <insert_field/>
+    <update_field/>
+    <delete_field/>
+    <read_field/>
+    <arguments>
+    </arguments>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>641</xloc>
+      <yloc>266</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -216,38 +248,6 @@
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>465</xloc>
       <yloc>155</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>report - delete old data</name>
-    <type>ExecSQL</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>167-report</connection>
-    <execute_each_row>Y</execute_each_row>
-    <single_statement>N</single_statement>
-    <replace_variables>N</replace_variables>
-    <quoteString>N</quoteString>
-    <sql>-- delete the data insert today but already exist before&#xd;&#xa;delete&#xd;&#xa;from kpi_browser_share &#xd;&#xa;where date_load &#x3c;&#x3e; &#xd;&#xa;   &#x28;&#xd;&#xa;      -- lastest date load&#xd;&#xa;      select &#xd;&#xa;        max&#x28;date_load&#x29; as last_date_load&#xd;&#xa;      from kpi_browser_share &#xd;&#xa;      where to_char&#x28;date_load, &#x27;YYYYMMDD&#x27;&#x29; &#x3d; to_char&#x28;sysdate, &#x27;YYYYMMDD&#x27;&#x29;&#xd;&#xa;    &#x29;&#xd;&#xa;and camp_id in &#xd;&#xa;  &#x28;&#xd;&#xa;    -- camp_id - new insert today&#xd;&#xa;    select &#xd;&#xa;      distinct camp_id &#xd;&#xa;    from kpi_browser_share &#xd;&#xa;    where date_load &#x3d; &#xd;&#xa;    &#x28;&#xd;&#xa;      -- lastest date load&#xd;&#xa;      select &#xd;&#xa;        max&#x28;date_load&#x29; as last_date_load&#xd;&#xa;      from kpi_browser_share &#xd;&#xa;      where to_char&#x28;date_load, &#x27;YYYYMMDD&#x27;&#x29; &#x3d; to_char&#x28;sysdate, &#x27;YYYYMMDD&#x27;&#x29;&#xd;&#xa;    &#x29;&#xd;&#xa;  &#x29;</sql>
-    <set_params>N</set_params>
-    <insert_field/>
-    <update_field/>
-    <delete_field/>
-    <read_field/>
-    <arguments>
-    </arguments>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>641</xloc>
-      <yloc>266</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
